@@ -6,7 +6,8 @@ import Layout from '../layouts/Layout.astro';
 <Layout title="Tatacoa Desert: The Final Countdown">
 	<main>
     <div class="text-container">
-      <h1> <span>Tatacoa Desert: </span> The Final Countdown</h1>
+      <h1> <span class="first-text">Tatacoa Desert: </span> </h1>
+      <h2><span class="second-text">  The Final Countdown</span></h2>
     </div>
       
 		<div id="countdown" class="countdown">
@@ -48,21 +49,38 @@ import Layout from '../layouts/Layout.astro';
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    color: #ff7402;
     .text-container {
       width: auto;
       max-width: 700px;
       & h1 {
       margin: 0;
-      font-size: 3.5rem;
       font-weight: 600;
       line-height: 1.4;
       text-wrap: balance;
       text-align: center;
-      & span {
+      transform: rotate(-5deg);
+      .first-text {
+        padding: 5px;
         font-size: 5rem;
+        background-color: #e9510a;
+        color: #e1fff9;
+       
       }
     }
+    & h2 {
+      margin: 0;
+      font-weight: 600;
+      line-height: 1.4;
+      text-wrap: balance;
+      text-align: center;
+      .second-text {
+        padding: 5px;
+        font-size: 3.5rem;
+        background-color: #ff7402;
+        color: #e1fff9;
+      }
+    }
+
     }
 		.countdown {
 			width: 100%;
@@ -97,11 +115,15 @@ import Layout from '../layouts/Layout.astro';
     gap: 30px;
     .text-container {
         & h1 {
-        font-size: 2rem;
-        & span {
-          font-size: 2.8rem;
-        }
+          .first-text {
+            font-size: 2.8rem;
+          }
       }
+      & h2 {
+          .second-text {
+            font-size: 2rem;
+          }
+        }
     }
 		.countdown {
 			gap: 25px;
