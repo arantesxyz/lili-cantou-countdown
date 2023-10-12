@@ -45,11 +45,10 @@ import Layout from '../layouts/Layout.astro';
     justify-content: center;
     align-items: center;
     gap: 40px;
-    background-image: url('./assets/bg.jpeg');
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: center center;
-    color: #7e4a07;
+    background-position: center;
+    color: #ff7402;
     .text-container {
       width: auto;
       max-width: 800px;
@@ -80,8 +79,9 @@ import Layout from '../layouts/Layout.astro';
 				}
         & small {
           font-size: 1.8rem;
+          font-weight: 500;
           text-transform: capitalize;
-          color: #faeb1e;
+          color: #ff7402;
         }
 			}
 	    }
@@ -153,18 +153,23 @@ const hours = document.getElementById('hours')
 const minutes = document.getElementById('minutes')
 const seconds = document.getElementById('seconds')
 
-//const currentYear = new Date().getFullYear()
-
+//songs
 const songs = [
   '/assets/audio/final-countdown.mp3',
-  '/assets/audio/song2.mp3',
+  '/assets/audio/song2.mp3','/assets/audio/song3.mp3','/assets/audio/song4.mp3','/assets/audio/song5.mp3','/assets/audio/song6.mp3','/assets/audio/song7.mp3'
 ];
 
+//backgrounds
+const backgrounds = [
+  './assets/bg.jpeg',
+  './assets/bg2.jpeg','./assets/bg3.jpeg','./assets/bg4.jpeg','./assets/bg5.jpeg','./assets/bg6.jpeg','./assets/bg7.jpeg','./assets/bg8.jpeg','./assets/bg9.jpeg','./assets/bg10.jpeg','./assets/bg11.jpeg','./assets/bg12.jpeg','./assets/bg13.jpeg'
+];
+
+// target date
 const newYearTime = new Date(`October 14 2023 03:30:00`)
 
 //create audio element
 const audioConter = document.getElementById('audio')
-
 const audioElement = new Audio()
 audioElement.controls = true
 audioElement.autoplay = true
@@ -176,13 +181,15 @@ const playRandomSong = () => {
   const randomIndex = Math.floor(Math.random() * songs.length)
   audioElement.src = songs[randomIndex]
   audioElement.play()
-  audioElement.muted = false;
-
 }
-
 audioElement.onended = playRandomSong
 
 
+const updateBackground = () => {
+  const randomIndex = Math.floor(Math.random() * backgrounds.length);
+  const selectedBackground = backgrounds[randomIndex];
+  document.querySelector('main').style.backgroundImage = `url('${selectedBackground}')`;
+};
 
 
 const updateCountdown = () => {
@@ -194,8 +201,6 @@ const updateCountdown = () => {
   const remainingMinutes = Math.floor(diff / 1000 / 60) % 60
   const remainingSeconds = Math.floor(diff / 1000 ) % 60
 
-
-
    days.innerHTML = remainingDays
    hours.innerHTML = remainingHours < 10 ? '0' + remainingHours  : remainingHours
    minutes.innerHTML = remainingMinutes < 10 ? '0' + remainingMinutes : remainingMinutes
@@ -206,6 +211,16 @@ const updateCountdown = () => {
 setInterval(() => {
   updateCountdown()
 }, 1000)
+
+
+window.onload = () => {
+  updateBackground()
+}
+
+setInterval(() => {
+  updateBackground()
+}, 30000)
+
 
 playRandomSong()
 
