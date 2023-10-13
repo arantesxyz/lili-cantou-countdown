@@ -1,6 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
+import Card from '../components/Card.astro';
+
 ---
 
 <Layout title="Tatacoa Desert: The Final Countdown">
@@ -29,9 +31,12 @@ import Layout from '../layouts/Layout.astro';
 			</div>
 		</div>
 
+    
+    <div id="countDownImage" class="countdown-image">
+    <Card />
 
-    <div  id="audio" class="audio-container"></div>
-
+    </div>
+    <div id="audio" class="audio-container"></div>
 
 
 	</main>
@@ -69,18 +74,18 @@ import Layout from '../layouts/Layout.astro';
       }
     }
     & h2 {
-      margin: 0;
-      font-weight: 600;
-      line-height: 1.4;
-      text-wrap: balance;
-      text-align: center;
-      .second-text {
-        padding: 5px;
-        font-size: 3.5rem;
-        background-color: #ff7402;
-        color: #e1fff9;
+        margin: 0;
+        font-weight: 600;
+        line-height: 1.4;
+        text-wrap: balance;
+        text-align: center;
+        .second-text {
+          padding: 5px;
+          font-size: 3.5rem;
+          background-color: #ff7402;
+          color: #e1fff9;
+        }
       }
-    }
 
     }
 		.countdown {
@@ -104,6 +109,13 @@ import Layout from '../layouts/Layout.astro';
         }
 			}
 	    }
+      .countdown-image {
+        display: none;
+        width: 80%;
+        justify-content: center;
+        opacity: 0;
+        transition: 1s all ease-out;
+      }
       & audio {
         margin-top: 30px;
       }
@@ -171,10 +183,16 @@ import Layout from '../layouts/Layout.astro';
 
 
 <script>
-const days = document.getElementById('days')
-const hours = document.getElementById('hours')
-const minutes = document.getElementById('minutes')
-const seconds = document.getElementById('seconds')
+    import confetti from 'canvas-confetti'
+
+    
+document.addEventListener("DOMContentLoaded", () => {
+
+const days = document.getElementById('days');
+const hours = document.getElementById('hours');
+const minutes = document.getElementById('minutes');
+const seconds = document.getElementById('seconds');
+const countdownImage = document.getElementById('countDownImage')
 
 //songs
 const songs = [
@@ -189,7 +207,9 @@ const backgrounds = [
 ];
 
 // target date
-const newYearTime = new Date(`October 14 2023 03:30:00`)
+const targetTime = new Date(`October 14 2023 03:30:00`)
+const currentTime = new Date()
+let diff = targetTime - currentTime;
 
 //create audio element
 const audioConter = document.getElementById('audio')
@@ -215,14 +235,51 @@ const updateBackground = () => {
 };
 
 
-const updateCountdown = () => {
-   const currentTime = new Date()
-   const diff = newYearTime - currentTime
+// add confetti
+const callFireworks = ()=> {
+    const duration = 15 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
-  const remainingDays = Math.floor(diff / 1000 / 60 / 60 / 24 )
-  const remainingHours = Math.floor(diff / 1000 / 60 / 60) % 24
-  const remainingMinutes = Math.floor(diff / 1000 / 60) % 60
-  const remainingSeconds = Math.floor(diff / 1000 ) % 60
+      
+    function randomInRange(min, max) {
+    return Math.random() * (max - min) + min;
+    }
+
+    var interval = setInterval(function() {
+    var timeLeft = animationEnd - Date.now();
+
+    if (timeLeft <= 0) {
+      return clearInterval(interval);
+    }
+
+    var particleCount = 50 * (timeLeft / duration);
+    // since particles fall down, start a bit higher than random
+    confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+    confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+    }, 250);
+  }
+
+
+  const imageCountdown = () => {
+    countdownImage.style.opacity = '1';
+    countdownImage.style.display = 'flex';
+  }
+
+const updateCountdown = () => {
+   console.log(diff)
+   
+  const remainingDays = Math.max(Math.floor(diff / 1000 / 60 / 60 / 24 ));
+  const remainingHours = Math.max(Math.floor(diff / 1000 / 60 / 60) % 24);
+  const remainingMinutes = Math.max(Math.floor(diff / 1000 / 60) % 60);
+  const remainingSeconds = Math.max(Math.floor(diff / 1000 ) % 60);
+
+  if (remainingDays === 0 && remainingHours === 0 && remainingMinutes === 0 && remainingSeconds === 0) {
+  callFireworks();
+  clearInterval(countdownInterval);
+  imageCountdown();
+}
+
 
    days.innerHTML = remainingDays
    hours.innerHTML = remainingHours < 10 ? '0' + remainingHours  : remainingHours
@@ -231,9 +288,14 @@ const updateCountdown = () => {
 
 }
 
-setInterval(() => {
-  updateCountdown()
-}, 1000)
+const countdownInterval = setInterval(() => {
+  updateCountdown();
+      diff -= 1000;
+      if (diff < 0) {
+        diff = 0; // Asegura que diff no sea negativo
+    }
+}, 1000);
+
 
 
 window.onload = () => {
@@ -248,5 +310,7 @@ setInterval(() => {
 playRandomSong()
 
 
+
+})
 
 </script>
