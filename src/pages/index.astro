@@ -13,6 +13,10 @@ import Card from '../components/Card.astro';
     </div>
       
 		<div id="countdown" class="countdown">
+      <div  class="time">
+        <h2 class="text-gradient" id="years">00</h2>
+        <small>years</small>
+      </div>
 			<div  class="time">
 				<h2 class="text-gradient" id="days">00</h2>
 				<small>days</small>
@@ -188,6 +192,7 @@ import Card from '../components/Card.astro';
     
 document.addEventListener("DOMContentLoaded", () => {
 
+const  years = document.getElementById('years');
 const days = document.getElementById('days');
 const hours = document.getElementById('hours');
 const minutes = document.getElementById('minutes');
@@ -207,7 +212,7 @@ const backgrounds = [
 ];
 
 // target date
-const targetTime = new Date(`October 14 2023 03:30:00`)
+const targetTime = new Date(`December 31 2030 23:59:59`)
 const currentTime = new Date()
 let diff = targetTime - currentTime;
 
@@ -269,18 +274,20 @@ const callFireworks = ()=> {
 const updateCountdown = () => {
    console.log(diff)
    
+  const remainingYears = Math.max(Math.floor(diff / 1000 / 60 / 60 / 24 / 365));
   const remainingDays = Math.max(Math.floor(diff / 1000 / 60 / 60 / 24 ));
   const remainingHours = Math.max(Math.floor(diff / 1000 / 60 / 60) % 24);
   const remainingMinutes = Math.max(Math.floor(diff / 1000 / 60) % 60);
   const remainingSeconds = Math.max(Math.floor(diff / 1000 ) % 60);
 
-  if (remainingDays === 0 && remainingHours === 0 && remainingMinutes === 0 && remainingSeconds === 0) {
+  if ( remainingYears === 0 && remainingDays === 0 && remainingHours === 0 && remainingMinutes === 0 && remainingSeconds === 0) {
   callFireworks();
   clearInterval(countdownInterval);
   imageCountdown();
 }
 
 
+    years.innerHTML = remainingYears 
    days.innerHTML = remainingDays
    hours.innerHTML = remainingHours < 10 ? '0' + remainingHours  : remainingHours
    minutes.innerHTML = remainingMinutes < 10 ? '0' + remainingMinutes : remainingMinutes
