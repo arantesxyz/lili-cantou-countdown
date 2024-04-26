@@ -10,8 +10,8 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/netlify": "^3.0.2",
-    "astro": "^3.2.4",
+    "@astrojs/cloudflare": "^10.2.4",
+    "astro": "^4.7.0",
     "canvas-confetti": "^1.9.0"
   }
 }

@@ -5,17 +5,17 @@ import Card from '../components/Card.astro';
 
 ---
 
-<Layout title="Tatacoa Desert: The Final Countdown">
+<Layout title="Lili cantou: A contagem regressiva">
 	<main>
     <div class="text-container">
-      <h1> <span class="first-text">Tatacoa Desert: </span> </h1>
-      <h2><span class="second-text">  The Final Countdown</span></h2>
+      <h1> <span class="first-text">Lili cantou: </span> </h1>
+      <h2><span class="second-text">  A contagem regressiva</span></h2>
     </div>
       
 		<div id="countdown" class="countdown">
       <div  class="time">
-        <h2 class="text-gradient" id="years">00</h2>
-        <small>years</small>
+        <h2 class="text-gradient" id="weeks">00</h2>
+        <small>weeks</small>
       </div>
 			<div  class="time">
 				<h2 class="text-gradient" id="days">00</h2>
@@ -192,7 +192,7 @@ import Card from '../components/Card.astro';
     
 document.addEventListener("DOMContentLoaded", () => {
 
-const  years = document.getElementById('years');
+const weeks = document.getElementById('weeks');
 const days = document.getElementById('days');
 const hours = document.getElementById('hours');
 const minutes = document.getElementById('minutes');
@@ -202,18 +202,12 @@ const countdownImage = document.getElementById('countDownImage')
 //songs
 const songs = [
   '/assets/audio/final-countdown.mp3',
-  '/assets/audio/song2.mp3','/assets/audio/song3.mp3','/assets/audio/song4.mp3','/assets/audio/song5.mp3','/assets/audio/song6.mp3','/assets/audio/song7.mp3'
-];
-
-//backgrounds
-const backgrounds = [
-  './assets/bg.jpeg',
-  './assets/bg2.jpeg','./assets/bg3.jpeg','./assets/bg4.jpeg','./assets/bg5.jpeg','./assets/bg6.jpeg','./assets/bg7.jpeg','./assets/bg8.jpeg','./assets/bg9.jpeg','./assets/bg10.jpeg','./assets/bg11.jpeg','./assets/bg12.jpeg','./assets/bg13.jpeg'
+  '/assets/audio/song2.mp3','/assets/audio/song3.mp3','/assets/audio/song4.mp3','/assets/audio/song6.mp3','/assets/audio/song7.mp3'
 ];
 
 // target date
-const targetTime = new Date(`December 31 2030 23:59:59`)
-const currentTime = new Date()
+const targetTime = new Date(`July 3 2024 18:00:00`).getTime()
+const currentTime = new Date().getTime()
 let diff = targetTime - currentTime;
 
 //create audio element
@@ -221,7 +215,7 @@ const audioConter = document.getElementById('audio')
 const audioElement = new Audio()
 audioElement.controls = true
 audioElement.autoplay = true
-audioElement.innerHTML = `Tu navegador no soporta audio HTML5.`
+audioElement.innerHTML = `Your browser does not support HTML5 Audio.`
 audioConter.appendChild(audioElement)
 
 
@@ -229,15 +223,10 @@ const playRandomSong = () => {
   const randomIndex = Math.floor(Math.random() * songs.length)
   audioElement.src = songs[randomIndex]
   audioElement.play()
+
+  console.log(`Playing: ${audioElement.src}`)
 }
 audioElement.onended = playRandomSong
-
-
-const updateBackground = () => {
-  const randomIndex = Math.floor(Math.random() * backgrounds.length);
-  const selectedBackground = backgrounds[randomIndex];
-  document.querySelector('main').style.backgroundImage = `url('${selectedBackground}')`;
-};
 
 
 // add confetti
@@ -274,24 +263,24 @@ const callFireworks = ()=> {
 const updateCountdown = () => {
    console.log(diff)
    
-  const remainingYears = Math.max(Math.floor(diff / 1000 / 60 / 60 / 24 / 365));
-  const remainingDays = Math.max(Math.floor(diff / 1000 / 60 / 60 / 24 ));
+  const remainingweeks = Math.max(Math.floor(diff / 1000 / 60 / 60 / 24 / 7));
+  const remainingDays = Math.max(Math.floor(diff / 1000 / 60 / 60 / 24 ) % 7);
   const remainingHours = Math.max(Math.floor(diff / 1000 / 60 / 60) % 24);
   const remainingMinutes = Math.max(Math.floor(diff / 1000 / 60) % 60);
   const remainingSeconds = Math.max(Math.floor(diff / 1000 ) % 60);
 
-  if ( remainingYears === 0 && remainingDays === 0 && remainingHours === 0 && remainingMinutes === 0 && remainingSeconds === 0) {
+  if ( remainingweeks === 0 && remainingDays === 0 && remainingHours === 0 && remainingMinutes === 0 && remainingSeconds === 0) {
   callFireworks();
   clearInterval(countdownInterval);
   imageCountdown();
 }
 
 
-    years.innerHTML = remainingYears 
-   days.innerHTML = remainingDays
-   hours.innerHTML = remainingHours < 10 ? '0' + remainingHours  : remainingHours
-   minutes.innerHTML = remainingMinutes < 10 ? '0' + remainingMinutes : remainingMinutes
-   seconds.innerHTML = remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds
+   weeks.innerHTML = `${remainingweeks}`
+   days.innerHTML = `${remainingDays}`
+   hours.innerHTML = `${remainingHours < 10 ? '0' + remainingHours  : remainingHours}`
+   minutes.innerHTML = `${remainingMinutes < 10 ? '0' + remainingMinutes : remainingMinutes}`
+   seconds.innerHTML = `${remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds}`
 
 }
 
@@ -303,20 +292,7 @@ const countdownInterval = setInterval(() => {
     }
 }, 1000);
 
-
-
-window.onload = () => {
-  updateBackground()
-}
-
-setInterval(() => {
-  updateBackground()
-}, 30000)
-
-
 playRandomSong()
-
-
 
 })
 
